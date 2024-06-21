@@ -1,0 +1,4 @@
+.venv
+**/__pycache__
+data/data.csv
+data/fiis.json
