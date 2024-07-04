@@ -33,11 +33,24 @@ infos = infos.rename(columns={
 })
 infos.sort_values(by=["Tipo", "Segmento"], inplace=True)
 
-st.dataframe(infos, hide_index=True, height=500, use_container_width=True, column_config={
-    "Preço Atual": st.column_config.NumberColumn(format="R$ %f"),
-    "Saldo": st.column_config.NumberColumn(format="R$ %f")
-})
+total = infos["Saldo"].sum()
 
+infos["Percentual"] = (infos["Saldo"] / total) * 100
+
+st.title(f"Total Investido - R$ {round(total, 2)}")
+st.divider()
+
+# Listagem
+st.title("Ativos")
+st.dataframe(infos, hide_index=True, height=500, use_container_width=True, column_config={
+    "Preço Atual": st.column_config.NumberColumn(format="R$ %.2f"),
+    "Saldo": st.column_config.NumberColumn(format="R$ %.2f"),
+    "Percentual": st.column_config.NumberColumn(format="%.2f %%"),
+})
+st.divider()
+
+# Graficos
+st.title("Gráficos")
 col1, col2 = st.columns([1, 1])
 
 resultado = infos.groupby('Categoria')['Saldo'].sum().reset_index()
