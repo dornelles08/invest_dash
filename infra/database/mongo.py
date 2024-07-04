@@ -1,9 +1,14 @@
+import os
+
+from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
+
+load_dotenv()
 
 
 def get_connection():
-    uri = "mongodb://root:MongoDB!@localhost:27017/"
-    client = MongoClient(uri)
+    mongo_string = os.getenv('MONGO_STRING')
+    client = MongoClient(mongo_string)
 
     db = client["invest_dash"]
 

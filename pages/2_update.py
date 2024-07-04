@@ -16,7 +16,6 @@ st.header("Atualizar informações sobre oa Ativos", divider=True)
 if st.button("Atualizar Base"):
     fiis_infos = get_fiis_infos(st)
     dados_service.insert_dados(fiis_infos)
-    # pd.DataFrame(data=fiis_infos).to_csv("data/data.csv", index=False)
     st.write("Informações atualizadas")
 
 
@@ -28,27 +27,15 @@ new_qtd_ativo = col2.number_input(
 new_category_ativo = col3.text_input("Categoria do Novo Ativo")
 
 if st.button("Adicionar Ativo"):
-    # data = load_data()
     fii_infos = get_fii(new_ativo)
     dados_service.insert_dado(fii_infos)
-    # fii_infos = pd.DataFrame(data=[fii_infos])
-    # new_data = pd.concat([data, fii_infos], ignore_index=True)
-    # new_data.to_csv("../data/data.csv", index=False)
-
-    # fiis, _, _, _ = load_fiis()
-    # with open("data/fiis.json", "w", encoding="utf-8") as file:
-    #     fiis.append({
-    #         "ativo": new_ativo,
-    #         "qtd": new_qtd_ativo,
-    #         "category": new_category_ativo
-    #     })
-    #     json.dump(fiis, file)
     fiis_service.insert_fii({
         "ativo": new_ativo,
         "qtd": new_qtd_ativo,
         "category": new_category_ativo
     })
     st.write("Ativo adicionado")
+    st.session_state["dados"] = None
 
 
 st.header("Atualizar Quantidade de um Ativo", divider=True)
@@ -68,11 +55,3 @@ if ativo:
             "qtd": qtd_ativo,
             "category": category_ativo
         })
-        # with open("data/fiis.json", "w", encoding="utf-8") as file:
-        #     fiis.append({
-        #         "ativo": ativo,
-        #         "qtd": qtd_ativo,
-        #         "category": category_ativo
-        #     })
-        #     json.dump(fiis, file)
-        #     st.write("Ativo atualizado")

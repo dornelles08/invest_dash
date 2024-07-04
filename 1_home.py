@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide",
 )
 
-if "dados" not in st.session_state:
+if "dados" not in st.session_state or st.session_state["dados"] is None:
     dados = load_data()
     st.session_state["dados"] = dados
 

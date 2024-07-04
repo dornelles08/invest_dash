@@ -48,6 +48,7 @@ pydeck==0.9.1
 Pygments==2.18.0
 pymongo==4.8.0
 python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
 pytz==2024.1
 pyzmq==26.0.3
 referencing==0.35.1
@@ -68,4 +69,5 @@ traitlets==5.14.3
 typing_extensions==4.11.0
 tzdata==2024.1
 urllib3==2.2.1
+watchdog==4.0.1
 wcwidth==0.2.13
