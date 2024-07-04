@@ -3,14 +3,18 @@ import json
 import pandas as pd
 
 from functions.get_fii_details import get_fii
+from services.dados import DadosService
+from services.fiis import FiisService
 
 
 def load_fiis():
     """
         Busca todas informações de Fiis
     """
-    with open("data/fiis.json", "r", encoding="utf-8") as file:
-        fiis = json.load(file)
+    # with open("data/fiis.json", "r", encoding="utf-8") as file:
+    #     fiis = json.load(file)
+    fiis_service = FiisService()
+    fiis = fiis_service.get_fiis()
 
     fiis_category = {}
     for fii in fiis:
@@ -39,13 +43,13 @@ def get_fiis_infos(st):
 
         bar.progress(percent, text=fii)
         data = get_fii(fii)
-        # data = {
-        #     "fii": fii
-        # }
         fiis_details.append(data)
 
     return fiis_details
 
 
 def load_data():
-    return pd.read_csv("data/data.csv")
+    dados_service = DadosService()
+    dados = dados_service.get_dados()
+    return pd.DataFrame(dados, columns=["nome", "tipo", "segmento", "vacancia", "cotacao", "valorizacao_diaria", "valorizacao_mensal", "valorizacao_anual", "dy", "ultimos_12_dividendos", "pvp", "ultimo_dividendo", "ultimo_rendimento", "ultima_cotacao_base", "ultima_data_com", "ultima_data_pagamento", "proximo_dividendo", "proximo_rendimento", "proxima_cotacao_base", "proxima_data_com", "proxima_data_pagamento"])
+    # return pd.read_csv("data/data.csv")

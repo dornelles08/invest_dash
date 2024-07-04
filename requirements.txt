@@ -12,6 +12,7 @@ click==8.1.7
 comm==0.2.2
 debugpy==1.8.1
 decorator==5.1.1
+dnspython==2.6.1
 executing==2.0.1
 gitdb==4.0.11
 GitPython==3.1.43
@@ -45,6 +46,7 @@ pure-eval==0.2.2
 pyarrow==16.1.0
 pydeck==0.9.1
 Pygments==2.18.0
+pymongo==4.8.0
 python-dateutil==2.9.0.post0
 pytz==2024.1
 pyzmq==26.0.3
@@ -52,6 +54,7 @@ referencing==0.35.1
 requests==2.32.0
 rich==13.7.1
 rpds-py==0.18.1
+schedule==1.2.2
 six==1.16.0
 smmap==5.0.1
 soupsieve==2.5
