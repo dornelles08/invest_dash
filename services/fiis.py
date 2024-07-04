@@ -16,8 +16,8 @@ class FiisService:
         self._collection.insert_one(fii)
 
     def update_fii(self, fii):
-        self._collection.update_one({"ativo": fii.ativo}, {"$set": {
-            "ativo": fii.ativo,
-            "qtd": fii.qtd,
-            "category": fii.category
+        self._collection.update_one({"ativo": fii["ativo"]}, {"$set": {
+            "ativo": fii["ativo"],
+            "qtd": fii["qtd"],
+            "category": fii["category"]
         }})
