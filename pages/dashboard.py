@@ -1,17 +1,14 @@
 import plotly.graph_objects as go
 import streamlit as st
 
+from functions.configs import valid_user_logged
 from functions.load_data import load_data, load_fiis
 
 st.set_page_config(
     layout="wide",
 )
 
-if "token" not in st.session_state or st.session_state.token is None or \
-        "user" not in st.session_state or st.session_state.user is None:
-    st.session_state["token"] = None
-    st.session_state["user"] = None
-    st.switch_page("home.py")
+valid_user_logged()
 
 if "dados" not in st.session_state or st.session_state["dados"] is None:
     _, _, fiis_names, _ = load_fiis(
@@ -66,9 +63,13 @@ def make_graphics(tab, subheader, result, column):
     container = tab.container(border=True)
     container.subheader(subheader)
     col1, col2 = container.columns([1, 3])
-    col1.dataframe(result[[column, "Saldo"]],
+
+    result["Porcentagem"] = (result["Saldo"] / result["Saldo"].sum()) * 100
+    result.sort_values(by=["Porcentagem"], inplace=True, ascending=False)
+
+    col1.dataframe(result[[column, "Porcentagem"]],
                    hide_index=True, height=500, use_container_width=True,
-                   column_config={"Saldo": st.column_config.NumberColumn(format="R$ %.2f"),
+                   column_config={"Porcentagem": st.column_config.NumberColumn(format="%.2f %%"),
                                   })
     fig = go.Figure(
         data=[go.Pie(labels=result[column], values=result["Saldo"])])

@@ -1,4 +1,3 @@
-
 from infra.database.mongo import get_connection
 
 
@@ -10,6 +9,11 @@ class UserService:
         user = self._collection.find_one({"username": username})
 
         return user
+
+    def get_users(self):
+        users = list(self._collection.find())
+
+        return users
 
     def insert_user(self, user):
         return self._collection.insert_one(user)

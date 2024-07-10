@@ -1,5 +1,3 @@
-import json
-
 import pandas as pd
 
 from functions.get_fii_details import get_fii

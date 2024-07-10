@@ -1,14 +1,12 @@
 import streamlit as st
 
+from functions.configs import valid_user_logged
 from functions.get_fii_details import get_fii
 from services.dados import DadosService
 from services.fiis import FiisService
 
-if "token" not in st.session_state or st.session_state.token is None or \
-        "user" not in st.session_state or st.session_state.user is None:
-    st.session_state["token"] = None
-    st.session_state["user"] = None
-    st.switch_page("home.py")
+valid_user_logged()
+
 
 fiis_service = FiisService()
 dados_service = DadosService()
