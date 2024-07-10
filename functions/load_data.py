@@ -7,12 +7,12 @@ from services.dados import DadosService
 from services.fiis import FiisService
 
 
-def load_fiis():
+def load_fiis(user_id):
     """
         Busca todas informações de Fiis
     """
     fiis_service = FiisService()
-    fiis = fiis_service.get_fiis()
+    fiis = fiis_service.get_fiis(user_id)
 
     fiis_category = {}
     for fii in fiis:
@@ -29,12 +29,12 @@ def load_fiis():
     return fiis, fiis_category, fiis_names, fiis_qtd
 
 
-def get_fiis_infos(st):
+def get_fiis_infos(st, user_id):
     """
         Busca os informações dos Fiis
     """
     bar = st.progress(0, text="Buscando Informações Atualizadas")
-    _, _, fiis, _ = load_fiis()
+    _, _, fiis, _ = load_fiis(user_id)
     fiis_details = []
     for i, fii in enumerate(fiis):
         percent = i/(len(fiis)-1)
@@ -46,7 +46,7 @@ def get_fiis_infos(st):
     return fiis_details
 
 
-def load_data():
+def load_data(fiis_names):
     dados_service = DadosService()
-    dados = dados_service.get_dados()
+    dados = dados_service.get_dados(fiis_names)
     return pd.DataFrame(dados, columns=["nome", "tipo", "segmento", "vacancia", "cotacao", "valorizacao_diaria", "valorizacao_mensal", "valorizacao_anual", "dy", "ultimos_12_dividendos", "pvp", "ultimo_dividendo", "ultimo_rendimento", "ultima_cotacao_base", "ultima_data_com", "ultima_data_pagamento", "proximo_dividendo", "proximo_rendimento", "proxima_cotacao_base", "proxima_data_com", "proxima_data_pagamento"])

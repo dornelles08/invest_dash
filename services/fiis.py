@@ -5,11 +5,9 @@ class FiisService:
     def __init__(self):
         self._collection = get_connection()["fiis"]
 
-    def get_fiis(self):
-        fiis = []
-        cursor = self._collection.find()
-        for fii in cursor:
-            fiis.append(fii)
+    def get_fiis(self, user_id):
+        fiis = list(self._collection.find({"user_id": user_id}))
+
         return fiis
 
     def insert_fii(self, fii):
@@ -17,7 +15,13 @@ class FiisService:
 
     def update_fii(self, fii):
         self._collection.update_one({"ativo": fii["ativo"]}, {"$set": {
-            "ativo": fii["ativo"],
             "qtd": fii["qtd"],
             "category": fii["category"]
         }})
+
+    def upsert_fii(self, fii):
+        exists_fii = self._collection.find_one({"ativo": fii["ativo"]})
+        if exists_fii:
+            self.update_fii(fii)
+        else:
+            self.insert_fii(fii)
