@@ -7,24 +7,22 @@ st.set_page_config(
     layout="wide",
 )
 
-if "token" not in st.session_state or st.session_state.token is None or "user" not in st.session_state or st.session_state.user is None:
+if "token" not in st.session_state or st.session_state.token is None or \
+        "user" not in st.session_state or st.session_state.user is None:
     st.session_state["token"] = None
     st.session_state["user"] = None
-    st.switch_page("1_home.py")
+    st.switch_page("home.py")
 
 if "dados" not in st.session_state or st.session_state["dados"] is None:
-    fiis, fiis_category, fiis_names, fiis_qtd = load_fiis(
+    _, _, fiis_names, _ = load_fiis(
         st.session_state["user"]["_id"])
     dados = load_data(fiis_names)
     st.session_state["dados"] = dados
 
-sair_button = st.button("Sair")
-if sair_button:
-    st.session_state["token"] = None
-    st.session_state["user"] = None
-    st.switch_page("1_home.py")
-
 dados = st.session_state["dados"]
+
+_, fiis_category, _, fiis_qtd = load_fiis(
+    st.session_state["user"]["_id"])
 
 dados["quantidade"] = dados["nome"].map(fiis_qtd)
 dados["categoria"] = dados["nome"].map(fiis_category)
@@ -62,13 +60,31 @@ st.divider()
 
 # Graficos
 st.title("Gráficos")
-col1, col2 = st.columns([1, 1])
+
+
+def make_graphics(tab, subheader, result, column):
+    container = tab.container(border=True)
+    container.subheader(subheader)
+    col1, col2 = container.columns([1, 3])
+    col1.dataframe(result[[column, "Saldo"]],
+                   hide_index=True, height=500, use_container_width=True,
+                   column_config={"Saldo": st.column_config.NumberColumn(format="R$ %.2f"),
+                                  })
+    fig = go.Figure(
+        data=[go.Pie(labels=result[column], values=result["Saldo"])])
+    col2.plotly_chart(fig, use_container_width=True)
+
+
+tab1, tab2, tab3, tab4 = st.tabs(
+    ["Categorias", "Ativos", "Segmentos", "Tipos"])
 
 resultado = infos.groupby('Categoria')['Saldo'].sum().reset_index()
-fig = go.Figure(
-    data=[go.Pie(labels=resultado["Categoria"], values=resultado["Saldo"])])
-col1.plotly_chart(fig, use_container_width=True)
+make_graphics(tab1, "Categorias", resultado, "Categoria")
 
-fig = go.Figure(
-    data=[go.Pie(labels=infos["Ativo"], values=infos["Saldo"])])
-col2.plotly_chart(fig, use_container_width=True)
+make_graphics(tab2, "Ativos", infos, "Ativo")
+
+resultado = infos.groupby('Segmento')['Saldo'].sum().reset_index()
+make_graphics(tab3, "Segmentos", resultado, "Segmento")
+
+resultado = infos.groupby('Tipo')['Saldo'].sum().reset_index()
+make_graphics(tab4, "Tipos", resultado, "Tipo")
