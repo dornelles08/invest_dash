@@ -6,9 +6,14 @@ class TransactionsService:
         self._collection = get_connection()["transactions"]
 
     def get_transactions(self, user_id):
-        transactions = list(self._collection.find({"user_id": user_id}))
+        transactions = self._collection.find({"user_id": user_id})
 
-        return transactions
+        return list(transactions)
+
+    def count_transactions(self, user_id):
+        count = self._collection.count_documents({"user_id": user_id})
+
+        return count
 
     def insert_transaction(self, transaction):
         self._collection.insert_one(transaction)

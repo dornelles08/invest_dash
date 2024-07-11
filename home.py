@@ -12,9 +12,9 @@ update_ativo_page = st.Page("pages/update/update_ativo.py", title="Atualizar Ati
 insert_new_ativo_page = st.Page("pages/update/insert_new_ativo.py", title="Novo Ativo",
                                 icon=":material/add:")
 
-insert_transaction_page = st.Page("pages/transactions/insert_transaction.py",
-                                  title="Nova Transação",
-                                  icon=":material/add:")
+transaction_page = st.Page("pages/transactions/transactions.py",
+                           title="Transações",
+                           icon=":material/list:")
 
 login_page = st.Page("pages/login.py", title="Log in", icon=":material/login:")
 logout_page = st.Page("pages/logout.py", title="Log out",
@@ -28,7 +28,7 @@ if "token" in st.session_state and "user" in st.session_state:
         pg = st.navigation(
             {"Dashboard": [dashboard_page],
              "Atualizações": [insert_new_ativo_page, update_ativo_page, update_base_page],
-             "Transações": [insert_transaction_page],
+             "Transações": [transaction_page],
              "Conta": [logout_page]})
     else:
         pg = st.navigation([login_page])
