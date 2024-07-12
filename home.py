@@ -16,6 +16,10 @@ transaction_page = st.Page("pages/transactions/transactions.py",
                            title="Transações",
                            icon=":material/list:")
 
+test_page = st.Page("pages/test.py",
+                    title="Teste",
+                    icon=":material/bug_report:")
+
 login_page = st.Page("pages/login.py", title="Log in", icon=":material/login:")
 logout_page = st.Page("pages/logout.py", title="Log out",
                       icon=":material/logout:")
@@ -29,6 +33,7 @@ if "token" in st.session_state and "user" in st.session_state:
             {"Dashboard": [dashboard_page],
              "Atualizações": [insert_new_ativo_page, update_ativo_page, update_base_page],
              "Transações": [transaction_page],
+             "Testes": [test_page],
              "Conta": [logout_page]})
     else:
         pg = st.navigation([login_page])
