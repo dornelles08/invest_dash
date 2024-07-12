@@ -26,3 +26,4 @@ if ativo:
             "qtd": qtd_ativo,
             "category": category_ativo
         })
+        st.success('Ativo atualizado com sucesso', icon="✅")

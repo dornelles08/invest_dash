@@ -35,4 +35,3 @@ def insert_transaction():
 
         st.success("Transação Adicionada com Sucesso", icon="✅")
         st.rerun()
-        # st.session_state["dados"] = None
