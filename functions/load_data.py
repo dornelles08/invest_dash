@@ -3,6 +3,7 @@ import pandas as pd
 from functions.get_fii_details import get_fii
 from services.dados import DadosService
 from services.fiis import FiisService
+from services.transaction import TransactionsService
 
 
 def load_fiis(user_id):
@@ -20,11 +21,7 @@ def load_fiis(user_id):
     for fii in fiis:
         fiis_names.append(fii["ativo"])
 
-    fiis_qtd = {}
-    for fii in fiis:
-        fiis_qtd[fii["ativo"]] = fii["qtd"]
-
-    return fiis, fiis_category, fiis_names, fiis_qtd
+    return fiis, fiis_category, fiis_names
 
 
 def get_fiis_infos(st, user_id):
@@ -32,7 +29,9 @@ def get_fiis_infos(st, user_id):
         Busca os informações dos Fiis
     """
     bar = st.progress(0, text="Buscando Informações Atualizadas")
-    _, _, fiis, _ = load_fiis(user_id)
+    # _, _, fiis, _ = load_fiis(user_id)
+    transaction_service = TransactionsService()
+    fiis = transaction_service.get_fiis_from_transactions(user_id)
     fiis_details = []
     for i, fii in enumerate(fiis):
         percent = i/(len(fiis)-1)
@@ -46,5 +45,6 @@ def get_fiis_infos(st, user_id):
 
 def load_data(fiis_names):
     dados_service = DadosService()
-    dados = dados_service.get_dados(fiis_names)
-    return pd.DataFrame(dados, columns=["nome", "tipo", "segmento", "vacancia", "cotacao", "valorizacao_diaria", "valorizacao_mensal", "valorizacao_anual", "dy", "ultimos_12_dividendos", "pvp", "ultimo_dividendo", "ultimo_rendimento", "ultima_cotacao_base", "ultima_data_com", "ultima_data_pagamento", "proximo_dividendo", "proximo_rendimento", "proxima_cotacao_base", "proxima_data_com", "proxima_data_pagamento"])
+    # dados = dados_service.get_dados(fiis_names)
+    # return pd.DataFrame(dados, columns=["nome", "tipo", "segmento", "vacancia", "cotacao", "valorizacao_diaria", "valorizacao_mensal", "valorizacao_anual", "dy", "ultimos_12_dividendos", "pvp", "ultimo_dividendo", "ultimo_rendimento", "ultima_cotacao_base", "ultima_data_com", "ultima_data_pagamento", "proximo_dividendo", "proximo_rendimento", "proxima_cotacao_base", "proxima_data_com", "proxima_data_pagamento"])
+    return dados_service.get_dados(fiis_names)

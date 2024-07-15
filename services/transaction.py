@@ -5,8 +5,8 @@ class TransactionsService:
     def __init__(self):
         self._collection = get_connection()["transactions"]
 
-    def get_transactions(self, user_id):
-        transactions = self._collection.find({"user_id": user_id})
+    def get_transactions(self, user_id, filtro={}):
+        transactions = self._collection.find({"user_id": user_id, **filtro})
 
         return list(transactions)
 
@@ -15,18 +15,21 @@ class TransactionsService:
 
         return count
 
+    def get_fiis_from_transactions(self, user_id):
+        transactions = self._collection.distinct("ativo", {"user_id": user_id})
+
+        return list(transactions)
+
     def insert_transaction(self, transaction):
         self._collection.insert_one(transaction)
 
     def update_transaction(self, transaction):
-        self._collection.update_one({"ativo": transaction["ativo"]}, {"$set": {
-            "qtd": transaction["qtd"],
-            "category": transaction["category"]
-        }})
+        self._collection.update_one(
+            {"_id": transaction["_id"]}, {"$set": transaction})
 
     def upsert_transaction(self, transaction):
         exists_transaction = self._collection.find_one(
-            {"ativo": transaction["ativo"]})
+            {"_id": transaction["_id"]})
         if exists_transaction:
             self.update_transaction(transaction)
         else:

@@ -34,4 +34,5 @@ def insert_transaction():
         transactions_service.insert_transaction(transaction)
 
         st.success("Transação Adicionada com Sucesso", icon="✅")
+        st.session_state["dados"] = None
         st.rerun()

@@ -20,7 +20,8 @@ transactions = transaction_service.get_transactions(
 total_transactions = transaction_service.count_transactions(
     st.session_state["user"]["_id"])
 
-transactions = pd.DataFrame(transactions)
+transactions = pd.DataFrame(transactions, columns=[
+                            '_id', 'ativo', 'qtd', 'price', 'date', 'total', 'user_id'])
 
 transactions = transactions[["ativo", "qtd", "price", "date", "total"]]
 

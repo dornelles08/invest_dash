@@ -14,13 +14,13 @@ class FiisService:
         self._collection.insert_one(fii)
 
     def update_fii(self, fii):
-        self._collection.update_one({"ativo": fii["ativo"]}, {"$set": {
-            "qtd": fii["qtd"],
+        self._collection.update_one({"ativo": fii["ativo"], "user_id": fii["user_id"]}, {"$set": {
             "category": fii["category"]
         }})
 
     def upsert_fii(self, fii):
-        exists_fii = self._collection.find_one({"ativo": fii["ativo"]})
+        exists_fii = self._collection.find_one(
+            {"ativo": fii["ativo"], "user_id": fii["user_id"]})
         if exists_fii:
             self.update_fii(fii)
         else:
