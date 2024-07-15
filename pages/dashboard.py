@@ -92,6 +92,7 @@ variation = round(((saldo_total/investido)-1)*100, 2)
 col1, _, col2 = st.columns([8, 1, 1], vertical_alignment="bottom")
 col1.metric(label="Total Investido", value=f"R$ {
             saldo_total}", delta=f"{variation} %")
+
 if col2.button("Atualizar Base"):
     user_sync = datetime.strptime(st.session_state["user"]["sync"], "%x %X")
     if (user_sync - datetime.now()).seconds >= 900:
@@ -101,8 +102,9 @@ if col2.button("Atualizar Base"):
             **st.session_state["user"],
             "sync": datetime.now().strftime("%x %X")
         })
-        st.session_state["dados"] = None
+    st.session_state["dados"] = None
     st.success("Transação Adicionada com Sucesso", icon="✅")
+    st.rerun()
 
 st.divider()
 
@@ -130,9 +132,9 @@ def make_graphics(tab, subheader, result, column):
     result.sort_values(by=["Porcentagem"], inplace=True, ascending=False)
 
     coluna1.dataframe(result[[column, "Porcentagem"]],
-                   hide_index=True, height=500, use_container_width=True,
-                   column_config={"Porcentagem": st.column_config.NumberColumn(format="%.2f %%"),
-                                  })
+                      hide_index=True, height=500, use_container_width=True,
+                      column_config={"Porcentagem": st.column_config.NumberColumn(format="%.2f %%"),
+                                     })
     fig = go.Figure(
         data=[go.Pie(labels=result[column], values=result["Saldo"])])
     coluna2.plotly_chart(fig, use_container_width=True)

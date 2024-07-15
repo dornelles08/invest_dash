@@ -34,3 +34,6 @@ class TransactionsService:
             self.update_transaction(transaction)
         else:
             self.insert_transaction(transaction)
+
+    def delete_transaction(self, user_id, _id):
+        self._collection.delete_one({"_id": _id, "user_id": user_id})
