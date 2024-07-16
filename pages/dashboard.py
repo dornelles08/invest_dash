@@ -90,8 +90,8 @@ saldo_total = round(infos["Saldo"].sum(), 2)
 variation = round(((saldo_total/investido)-1)*100, 2)
 
 col1, _, col2 = st.columns([8, 1, 1], vertical_alignment="bottom")
-col1.metric(label="Total Investido", value=f"R$ {
-            saldo_total}", delta=f"{variation} %")
+col1.metric(label="Total Investido",
+            value=f"R$ {saldo_total}", delta=f"{variation} %")
 
 if col2.button("Atualizar Base"):
     user_sync = datetime.strptime(st.session_state["user"]["sync"], "%x %X")

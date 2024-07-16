@@ -5,6 +5,6 @@
 [x] Listar transações
 [x] Editar transação
 [x] Excluir transação
-[] Rentabilidade Mensal de cada ativo
 [x] Job para buscar automaticamente informações sobre ativos
 [x] Automaticamneto desdobrar cotas
+[] Rentabilidade Mensal de cada ativo
