@@ -12,12 +12,8 @@ def get_html(url):
     return html
 
 
-def convert_string_to_float(price):
-    return float(price.replace("R$ ", "").replace("%", "").replace(".", "").replace(",", "."))
-
-
 def get_card_information(html_doc, card):
-    return convert_string_to_float(html_doc.find(class_=card).find(
+    return convert_to_float(html_doc.find(class_=card).find(
         class_="_card-body").find("span").get_text())
 
 
@@ -42,7 +38,7 @@ def get_investidor10_infos(fii):
             if indicador.find(class_='desc').find('span').get_text().strip() in principais_indicadores:
                 if indicador.find(class_='desc').find('span').get_text().strip() == "ÚLTIMO RENDIMENTO":
                     indicadores_selecionados[indicador.find(class_='desc').find('span').get_text(
-                    ).strip()] = convert_string_to_float(indicador.find(class_='desc').find(class_='value').get_text().strip())
+                    ).strip()] = convert_to_float(indicador.find(class_='desc').find(class_='value').get_text().strip())
                 else:
                     indicadores_selecionados[indicador.find(class_='desc').find('span').get_text(
                     ).strip()] = indicador.find(class_='desc').find(class_='value').get_text().strip()
@@ -79,7 +75,7 @@ def get_fii(fii):
             url = f"https://statusinvest.com.br/fiagros/{fii}"
 
         html = get_html(url)
-        
+
         nome = html.find("h1").get_text()
 
         cotacao = convert_to_float(html.find(title="Valor atual do ativo").find(

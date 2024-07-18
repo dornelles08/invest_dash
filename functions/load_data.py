@@ -44,7 +44,5 @@ def get_fiis_infos(st, user_id):
 
 
 def load_data(fiis_names):
-    dados_service = DadosService()
-    # dados = dados_service.get_dados(fiis_names)
-    # return pd.DataFrame(dados, columns=["nome", "tipo", "segmento", "vacancia", "cotacao", "valorizacao_diaria", "valorizacao_mensal", "valorizacao_anual", "dy", "ultimos_12_dividendos", "pvp", "ultimo_dividendo", "ultimo_rendimento", "ultima_cotacao_base", "ultima_data_com", "ultima_data_pagamento", "proximo_dividendo", "proximo_rendimento", "proxima_cotacao_base", "proxima_data_com", "proxima_data_pagamento"])
+    dados_service = DadosService()    
     return dados_service.get_dados(fiis_names)
