@@ -2,7 +2,7 @@ import streamlit as st
 
 from functions.login import valid_token
 
-dashboard_page = st.Page("pages/dashboard.py",
+dashboard_page = st.Page("pages/dashboard/dashboard.py",
                          title="Dashboard", icon=":material/dashboard:")
 
 desdobramento_page = st.Page("pages/update/desdobramento.py", title="Desdobramento",

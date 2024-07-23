@@ -1,27 +1,53 @@
-from services.dados import DadosService
+from time import sleep
 
-dados_service = DadosService()
+import requests
 
-dados_service.upsert_dado({
-    "nome": "HSML11",
-    "tipo": "Fundo de Tijolo",
-    "segmento": "Shoppings / Varejo",
-    "vacancia": 4.9,
-    "cotacao": 93.05,
-    "valorizacao_diaria": 1.11,
-    "valorizacao_mensal": -1.5,
-    "valorizacao_anual": 0.26,
-    "dy": 9.91,
-    "ultimos_12_dividendos": 9.22,
-    "pvp": 0.97,
-    "ultimo_dividendo": 0.8,
-    "ultimo_rendimento": 0.8218,
-    "ultima_cotacao_base": 97.35,
-    "ultima_data_com": "28/06/2024",
-    "ultima_data_pagamento": "05/07/2024",
-    "proximo_dividendo": "-",
-    "proximo_rendimento": "-",
-    "proxima_cotacao_base": "-",
-    "proxima_data_com": "-",
-    "proxima_data_pagamento": "-"
-})
+from services.price_mouth import PriceMonthService
+from services.transaction import TransactionsService
+from services.user import UserService
+
+user_service = UserService()
+transaction_service = TransactionsService()
+price_mouth_service = PriceMonthService()
+
+users = user_service.get_users()
+
+ativos = transaction_service.get_fiis_from_transactions(
+    user_id=users[0]["_id"])
+
+print(ativos)
+
+all_prices = []
+
+for ativo in ativos:
+    print(ativo)
+    exists = price_mouth_service.get_by_ativo(ativo)
+    if exists is not None:
+        print(f"Ativo já existe prices month")
+        continue
+
+    response = requests.get(
+        url=f"https://www.alphavantage.co/query?apikey=C8F4NRWAQ4XOYNCA&function=TIME_SERIES_MONTHLY&symbol={ativo}.SAO")
+
+    if 'Monthly Time Series' not in response.json():
+        print(f"Error: {ativo}")
+        continue
+
+    prices_month = []
+    prices = response.json()['Monthly Time Series']
+    for month in prices:
+        prices_month.append({
+            "ano": month.split("-")[0],
+            "mes": month.split("-")[1],
+            "open": prices[month]["1. open"],
+            "high": prices[month]["2. high"],
+            "low": prices[month]["3. low"],
+            "close": prices[month]["4. close"],
+            "volume": prices[month]["5. volume"],
+        })
+
+    price_mouth_service.insert({
+        "ativo": ativo,
+        "valor_por_mes": prices_month
+    })
+    # sleep(10)
