@@ -1,3 +1,5 @@
+from pymongo import ASCENDING, DESCENDING
+
 from infra.database.mongo import get_connection
 
 
@@ -5,8 +7,10 @@ class TransactionsService:
     def __init__(self):
         self._collection = get_connection()["transactions"]
 
-    def get_transactions(self, user_id, filtro={}):
-        transactions = self._collection.find({"user_id": user_id, **filtro})
+    def get_transactions(self, user_id, filtro={}, order_by="date", order="desc"):
+        transactions = self._collection.find(
+            {"user_id": user_id, **filtro}).sort(
+                order_by, DESCENDING if order == "desc" else ASCENDING)
 
         return list(transactions)
 

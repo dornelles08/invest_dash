@@ -1,22 +1,18 @@
 import streamlit as st
 
 
-def resume(infos):
-    df = infos[[
-        "Ativo",
-        # "Segmento",
-        # "Tipo",
-        "Quantidade",
-        "Preço Médio",
-        "Valor Investido",
-        "Preço Atual",
-        "Saldo",
-        "% Ganho",
-        "Ganho",
-        # "P/VP",
-        # "Categoria",
-        "Percentual"
-    ]]
+def resume(infos, columns=[
+    "Ativo",
+    "Quantidade",
+    "Preço Médio",
+    "Valor Investido",
+    "Preço Atual",
+    "Saldo",
+    "% Ganho",
+    "Ganho",
+    "Percentual"
+]):
+    df = infos[columns]
     st.header("Resumo", divider=True)
     st.dataframe(
         data=df,

@@ -18,7 +18,7 @@ if st.button("Adicionar nova transação"):
     insert_transaction()
 
 transactions = transaction_service.get_transactions(
-    st.session_state["user"]["_id"])
+    st.session_state["user"]["_id"], order_by="date")
 
 total_transactions = transaction_service.count_transactions(
     st.session_state["user"]["_id"])

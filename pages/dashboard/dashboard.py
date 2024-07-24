@@ -4,7 +4,6 @@ import streamlit as st
 from functions.configs import valid_user_logged
 from functions.load_data import load_fiis
 from pages.dashboard.cards import cards
-# from pages.dashboard.graphics import graphics
 from pages.dashboard.resume import resume
 from services.dados import DadosService
 from services.transaction import TransactionsService
@@ -96,6 +95,3 @@ cards(infos)
 
 # Resumo
 resume(infos)
-
-# Graficos
-# graphics(infos)
