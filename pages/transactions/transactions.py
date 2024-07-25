@@ -46,10 +46,16 @@ transactions.sort_values(by="Data da Compra", ascending=True)
 fiis_names = transaction_service.get_fiis_from_transactions(
     st.session_state["user"]["_id"])
 
-ativo = st.selectbox("Fii", fiis_names, index=None)
+col1, col2 = st.columns([1, 1])
+ativo = col1.selectbox("Fii", fiis_names, index=None)
+
+meses = list(transactions["mesAno"].unique())
+ref = col2.selectbox("Mês Referência", meses, index=None)
+
 if ativo:
     transactions = transactions[transactions["Ativo"] == ativo]
-
+if ref:
+    transactions = transactions[transactions["mesAno"] == ref]
 
 event = st.dataframe(transactions, hide_index=True, height=500, use_container_width=True,
                      column_config={
