@@ -13,6 +13,14 @@ class PriceMonthService:
 
         return {"ativo": price_month["ativo"], "price_month": price_month["valor_por_mes"]}
 
+    def get_by_ativos(self, ativos):
+        prices_months = []
+        for ativo in ativos:
+            price_month = self.get_by_ativo(ativo)
+            prices_months.append(price_month)
+
+        return prices_months
+
     def insert(self, price_month):
         return self._collection.insert_one(price_month)
 

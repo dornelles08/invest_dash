@@ -17,26 +17,27 @@
 
 
 Home
-  [x]Card Total Aplicado
-  [x]Card Total Bruto
-  [x]Card Valorização
+  [x] Card Total Aplicado
+  [x] Card Total Bruto
+  [x] Card Valorização
 
-  [x]Resumo dos Ativos
+  [x] Resumo dos Ativos
 
 Patrimonio
-  []Seleção do mês referencia
-  []Grafico de pizza com 4 agrupamentos (Categoria, Ativos, Segmentos, e tipos)
+  [x] Seleção do mês referencia
+  [x] Grafico de pizza com 4 agrupamentos (Categoria, Ativos, Segmentos, e tipos)
+  [x] Tabela com Ativos, Saldo e Percentual
 
 Rentabilidade
-  []Grafico com o investimento mensal
-  []Grafico com a evolução (Na mesma barra o total investido e a valorização)
-  []Tabela com %Mensal, %Acumulada, Patrimônio, Compras
+  [] Grafico com o investimento mensal
+  [] Grafico com a evolução (Na mesma barra o total investido e a valorização)
+  [] Tabela com %Mensal, %Acumulada, Patrimônio, Compras
 
 Posição Resumida
-  []Seleção do mês referencia
-  []Grafico com a valorização de cada ativo
-  []Tabela com a valorização de cada ativo lucro e % de lucro
+  [x] Seleção do mês referencia
+  [x] Grafico com a valorização de cada ativo
+  [x] Tabela com a valorização de cada ativo lucro e % de lucro
 
 Posição Detalhada
-  []Seleção do mês referencia
-  []Tabela com a quantidade, preço médio, investido, preço atual, total, ganho, %ganho
+  [] Seleção do mês referencia
+  [] Tabela com a quantidade, preço médio, investido, preço atual, total, ganho, %ganho

@@ -2,14 +2,20 @@ import streamlit as st
 
 from functions.login import valid_token
 
-dashboard_page = st.Page("pages/dashboard/dashboard.py",
+dashboard_page = st.Page("pages/dashboard.py",
                          title="Dashboard", icon=":material/dashboard:")
 
 # desdobramento_page = st.Page("pages/update/desdobramento.py", title="Desdobramento",
 #                              icon=":material/contract:")
 
-patrimony_page = st.Page("pages/patrimonio/patrimonio.py", title="Patrimonio",
+patrimony_page = st.Page("pages/patrimonio.py", title="Patrimonio",
                          icon=":material/attach_money:")
+
+position_detailed = st.Page("pages/position/detailed.py", title="Posição Detalhada",
+                            icon=":material/open_in_full:")
+position_summarized = st.Page("pages/position/summarized.py", title="Posição Resumida",
+                              icon=":material/close_fullscreen:")
+
 
 update_ativo_page = st.Page("pages/ativo/update_ativo.py", title="Atualizar Ativo",
                             icon=":material/update:")
@@ -30,6 +36,7 @@ page_stack = {
     "Dashboard": [dashboard_page],
     "Patrimoio": [patrimony_page],
     # "Atualizações": [desdobramento_page],
+    "Posição": [position_summarized, position_detailed],
     "Ativo": [update_ativo_page],
     "Transações": [transaction_page],
     "Testes": [test_page],

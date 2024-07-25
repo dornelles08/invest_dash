@@ -23,8 +23,8 @@ def cards(infos):
 
     variation = round((saldo_total-investido), 2)
 
-    col1, col2, col3, _, col = st.columns(
-        [3, 3, 3, 4, 3], vertical_alignment="bottom")
+    col1, col2, col3, col = st.columns(
+        [1, 1, 1, 1], vertical_alignment="bottom")
     col1.metric(label="Valor Aplicado",
                 value=f"R$ {investido}")
     col2.metric(label="Valor Atual",

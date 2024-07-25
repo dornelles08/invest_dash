@@ -1,10 +1,10 @@
 import pandas as pd
 import streamlit as st
 
+from components.cards import cards
+from components.resume import resume
 from functions.configs import valid_user_logged
 from functions.load_data import load_fiis
-from pages.dashboard.cards import cards
-from pages.dashboard.resume import resume
 from services.dados import DadosService
 from services.transaction import TransactionsService
 from services.user import UserService
@@ -94,4 +94,5 @@ st.header("Carteira Fundos Imobiliários", divider=True)
 cards(infos)
 
 # Resumo
+st.header("Resumo", divider=True)
 resume(infos)

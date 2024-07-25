@@ -8,7 +8,7 @@ def make_graphics(tab, subheader, result, column):
     """
     container = tab.container(border=True)
     container.subheader(subheader)
-    coluna1, coluna2 = container.columns([1, 3])
+    coluna1, coluna2 = container.columns([2, 3])
 
     result["Porcentagem"] = (result["Saldo"] / result["Saldo"].sum()) * 100
     result.sort_values(by=["Porcentagem"], inplace=True, ascending=False)
@@ -22,13 +22,15 @@ def make_graphics(tab, subheader, result, column):
     coluna2.plotly_chart(fig, use_container_width=True)
 
 
-def graphics(infos):
+def graphics(infos, display=None):
     """   
       Cria graficos para 4 agrupamentos
       Categorias, Ativos, Segmentos, Tipos
     """
-    st.title("Gráficos")
-    tab1, tab2, tab3, tab4 = st.tabs(
+    if display is None:
+        display = st
+
+    tab1, tab2, tab3, tab4 = display.tabs(
         ["Categorias", "Ativos", "Segmentos", "Tipos"])
 
     resultado = infos.groupby('Categoria')['Saldo'].sum().reset_index()
