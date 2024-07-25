@@ -39,5 +39,5 @@ Posição Resumida
   [x] Tabela com a valorização de cada ativo lucro e % de lucro
 
 Posição Detalhada
-  [] Seleção do mês referencia
-  [] Tabela com a quantidade, preço médio, investido, preço atual, total, ganho, %ganho
+  [x] Seleção do mês referencia
+  [x] Tabela com a quantidade, preço médio, investido, preço atual, total, ganho, %ganho
