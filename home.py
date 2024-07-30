@@ -8,7 +8,7 @@ dashboard_page = st.Page("pages/dashboard.py",
 # desdobramento_page = st.Page("pages/update/desdobramento.py", title="Desdobramento",
 #                              icon=":material/contract:")
 
-patrimony_page = st.Page("pages/patrimonio.py", title="Patrimonio",
+patrimony_page = st.Page("pages/patrimony.py", title="Patrimonio",
                          icon=":material/attach_money:")
 
 position_detailed = st.Page("pages/position/detailed.py", title="Posição Detalhada",
@@ -16,6 +16,8 @@ position_detailed = st.Page("pages/position/detailed.py", title="Posição Detal
 position_summarized = st.Page("pages/position/summarized.py", title="Posição Resumida",
                               icon=":material/close_fullscreen:")
 
+profit_page = st.Page("pages/profit.py", title="Rentabilidade",
+                      icon=":material/query_stats:")
 
 update_ativo_page = st.Page("pages/ativo/update_ativo.py", title="Atualizar Ativo",
                             icon=":material/update:")
@@ -37,6 +39,7 @@ page_stack = {
     "Patrimoio": [patrimony_page],
     # "Atualizações": [desdobramento_page],
     "Posição": [position_summarized, position_detailed],
+    "Rentabilidade": [profit_page],
     "Ativo": [update_ativo_page],
     "Transações": [transaction_page],
     "Testes": [test_page],

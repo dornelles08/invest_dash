@@ -1,7 +1,4 @@
-import pandas as pd
-
 from functions.get_fii_details import get_fii
-from services.dados import DadosService
 from services.fiis import FiisService
 from services.transaction import TransactionsService
 
@@ -28,7 +25,7 @@ def get_fiis_infos(st, user_id):
     """
         Busca os informações dos Fiis
     """
-    bar = st.progress(0, text="Buscando Informações Atualizadas")
+    BAR = st.progress(0, text="Buscando Informações Atualizadas")
     # _, _, fiis, _ = load_fiis(user_id)
     transaction_service = TransactionsService()
     fiis = transaction_service.get_fiis_from_transactions(user_id)
@@ -36,13 +33,8 @@ def get_fiis_infos(st, user_id):
     for i, fii in enumerate(fiis):
         percent = i/(len(fiis)-1)
 
-        bar.progress(percent, text=fii)
+        BAR.progress(percent, text=fii)
         data = get_fii(fii)
         fiis_details.append(data)
 
     return fiis_details
-
-
-def load_data(fiis_names):
-    dados_service = DadosService()    
-    return dados_service.get_dados(fiis_names)

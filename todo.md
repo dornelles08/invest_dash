@@ -6,7 +6,7 @@
 [x] Editar transação
 [x] Excluir transação
 [x] Job para buscar automaticamente informações sobre ativos
-[x] Automaticamneto desdobrar cotas
+[] Automaticamneto desdobrar cotas
 [] Rentabilidade Mensal - Quanto ganhou ou perdeu por mês
 [] Mudar do Mongo para o PostgreSQL
 [] Aprender a usar o SQLAlchemy
@@ -29,9 +29,10 @@ Patrimonio
   [x] Tabela com Ativos, Saldo e Percentual
 
 Rentabilidade
-  [] Grafico com o investimento mensal
-  [] Grafico com a evolução (Na mesma barra o total investido e a valorização)
-  [] Tabela com %Mensal, %Acumulada, Patrimônio, Compras
+  [x] Grafico com o investimento mensal
+  [x] Grafico com a evolução dos investimentos
+  [x] Grafico com a evolução (Na mesma barra o total investido e a valorização)
+  [x] Tabela com %Mensal, %Acumulada, Patrimônio, Compras
 
 Posição Resumida
   [x] Seleção do mês referencia
