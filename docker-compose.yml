@@ -6,10 +6,19 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: MongoDB!
     ports:
       - "27017:27017"
+  
   update_infos:
     build:
       context: .
       dockerfile: update-infos.Dockerfile
     container_name: update-infos
+    volumes:
+      - .:/app
+  
+  update_price_month:
+    build:
+      context: .
+      dockerfile: update-price-month.Dockerfile
+    container_name: update-price-month
     volumes:
       - .:/app

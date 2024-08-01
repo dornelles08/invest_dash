@@ -1,6 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 
+from errors.api_rate_limit import ApiRateLimit
+from services.alpha_vantage import AlphaVantageService
+from services.price_mouth import PriceMonthService
+from services.transaction import TransactionsService
+
 
 def get_html(url):
     html = requests.get(url, headers={
@@ -135,4 +140,42 @@ def get_fii(fii):
             **proximo,
         }
     except Exception as e:
+        print(e)
+
+
+def update_prices_month(user_id):
+    alpha_vantage_service = AlphaVantageService()
+    price_month_service = PriceMonthService()
+    transaction_service = TransactionsService()
+
+    ativos = transaction_service.get_fiis_from_transactions(user_id)
+
+    try:
+        for ativo in ativos:
+            prices = alpha_vantage_service.get_price_by_month(ticker=f"{
+                                                              ativo}.SAO")
+            if 'Information' in prices:
+                raise ApiRateLimit(prices["Information"])
+
+            prices = prices['Monthly Time Series']
+
+            price_month = {
+                "ativo": ativo,
+                "valor_por_mes": []
+            }
+
+            for month in prices:
+                price = prices[month]
+                price_month["valor_por_mes"].append({
+                    "ano": month.split("-")[0],
+                    "mes": month.split("-")[1],
+                    "open": price["1. open"],
+                    "high": price["2. high"],
+                    "low": price["3. low"],
+                    "close": price["4. close"],
+                    "volume": price["5. volume"]
+                })
+
+            price_month_service.upsert(price_month)
+    except ApiRateLimit as e:
         print(e)
