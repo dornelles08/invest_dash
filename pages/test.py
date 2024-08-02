@@ -1,91 +1,67 @@
-from datetime import datetime
-
 import pandas as pd
-import plotly.graph_objects as go
 import streamlit as st
 
-from functions.configs import valid_user_logged
-from services.dados import DadosService
-from services.price_mouth import PriceMonthService
-from services.transaction import TransactionsService
 
-price_month_service = PriceMonthService()
-transaction_service = TransactionsService()
+def ajustar_colunas(df, columns):
+    for column in columns:
+        df[column] = df[column].str.replace(
+            'R$', '', regex=False).str.replace('.', '').str.replace(',', '.').astype(float)
 
-fiis = transaction_service.get_fiis_from_transactions(
-    st.session_state["user"]["_id"])
-
-prices_fiis = []
-
-for fii in fiis:
-    prices = price_month_service.get_by_ativo(fii)
-    if prices:
-        for price in prices["price_month"]:
-            if float(price["close"]) < 10000:
-                prices_fiis.append({
-                    "ativo": fii,
-                    **price
-                })
+    return df
 
 
-prices_fiis = pd.DataFrame(prices_fiis)
+col1, col2 = st.columns([1, 1])
 
-prices_fiis["mesAno"] = prices_fiis["mes"] + "/" + prices_fiis["ano"]
-prices_fiis["mesAno"] = pd.to_datetime(
-    prices_fiis["mesAno"], format="%m/%Y") + pd.offsets.MonthEnd(0)
+proventos = col1.file_uploader("Planilha de Proventos", type="csv")
+rentabilidade = col2.file_uploader("Planilha de Rentabilidade", type="csv")
 
-prices_fiis
+if proventos is not None and rentabilidade is not None:
+    proventos_bytes_data = proventos.read()
+    with open("data/proventos.csv", "w", encoding="utf-8") as arq:
+        arq.write(proventos_bytes_data.decode("utf-8"))
 
-mes_ano = "02/2024"
-mes_ano = pd.to_datetime(
-    mes_ano, format='%m/%Y') + pd.offsets.MonthEnd(0)
+    rentabilidade_bytes_data = rentabilidade.read()
+    with open("data/rentabilidade.csv", "w", encoding="utf-8") as arq:
+        arq.write(rentabilidade_bytes_data.decode("utf-8"))
 
-transactions = transaction_service.get_transactions(st.session_state["user"]["_id"], {
-    "date": {"$lte": mes_ano},
-    "ativo": {"$in":  list(prices_fiis["ativo"].unique())}
-})
+    proventos = pd.read_csv("data/proventos.csv")
+    rentabilidade = pd.read_csv("data/rentabilidade.csv")
+    rentabilidade.drop(rentabilidade.index[-1], inplace=True)
 
-transactions = pd.DataFrame(transactions, columns=[
-                            '_id', 'ativo', 'qtd', 'price', 'date', 'total', 'user_id'])
+    proventos = ajustar_colunas(
+        proventos.copy(), ["Recebido", "Preço médio", "Cotação", "Valor por cota"])
+    proventos_soma = proventos.groupby('Ativo')['Recebido'].sum().reset_index()
+    proventos_soma.rename(columns={'Recebido': 'Dividendos'}, inplace=True)
 
-transactions = transactions[["ativo", "qtd", "price", "date", "total"]]
+    rentabilidade = ajustar_colunas(
+        rentabilidade.copy(), ["Preço médio", "Preço atual"])
+    rentabilidade["Total investido"] = rentabilidade["Qtd"] * \
+        rentabilidade["Preço médio"]
+    rentabilidade["Total atual"] = rentabilidade["Qtd"] * \
+        rentabilidade["Preço atual"]
+    rentabilidade["Ganho"] = rentabilidade["Total atual"] - \
+        rentabilidade["Total investido"]
+    rentabilidade["% Ganho"] = ((rentabilidade["Total atual"] /
+                                rentabilidade["Total investido"])-1)*100
+    rentabilidade = pd.merge(
+        rentabilidade, proventos_soma, on='Ativo', how='left')
+    rentabilidade["Ganho Real"] = rentabilidade["Ganho"] + \
+        rentabilidade["Dividendos"]
 
-transactions = transactions.rename(columns={
-    "ativo": "Ativo",
-    "qtd": "Quantidade",
-    "price": "Preço",
-    "total": "Total",
-    "date": "Data da Compra",
-})
+    ganho_total = rentabilidade["Ganho Real"].sum()
+    total_investido = rentabilidade["Total investido"].sum()
 
-transactions
+    ganho_percentual = ganho_total/total_investido
 
-mes_ano
+    st.metric(label="Ganho Real Total", value=f"R$ {round(ganho_total,2)}")
 
-prices_fiis_mes_ano = prices_fiis[prices_fiis["mesAno"] == mes_ano][[
-    "ativo", "close"]]
-
-st.dataframe(prices_fiis_mes_ano)
-
-resultado = transactions.groupby('ativo')['Saldo'].sum().reset_index()
-
-# prices_group = prices_fiis.groupby(by="ativo")
-
-# for ativo, group in prices_group:
-#     st.dataframe(group)
-
-# fig = go.Figure()
-# ativos = prices_fiis["ativo"].unique()
-# for ativo in ativos:
-#     df_ativo = prices_fiis[prices_fiis["ativo"] == ativo]
-#     fig.add_trace(go.Scatter(
-#         x=df_ativo["mesAno"], y=df_ativo["close"], mode="lines", name=ativo))
-
-# fig.update_layout(
-#     title="Preço de Fechamento por Ativo ao Longo do Tempo",
-#     xaxis_title="Data",
-#     yaxis_title="Preço de Fechamento",
-#     legend_title="Ativos"
-# )
-
-# st.plotly_chart(fig, use_container_width=True)
+    st.dataframe(data=rentabilidade, height=500, column_config={
+        "Preço médio": st.column_config.NumberColumn(format="R$ %.2f"),
+        "Total investido": st.column_config.NumberColumn(format="R$ %.2f"),
+        "Preço atual": st.column_config.NumberColumn(format="R$ %.2f"),
+        "Total atual": st.column_config.NumberColumn(format="R$ %.2f"),
+        "Ganho": st.column_config.NumberColumn(format="R$ %.2f"),
+        "Dividendos": st.column_config.NumberColumn(format="R$ %.2f"),
+        "Ganho Real": st.column_config.NumberColumn(format="R$ %.2f"),
+        "% Ganho": st.column_config.NumberColumn(format="%.2f %%"),
+    })

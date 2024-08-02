@@ -152,8 +152,7 @@ def update_prices_month(user_id):
 
     try:
         for ativo in ativos:
-            prices = alpha_vantage_service.get_price_by_month(ticker=f"{
-                                                              ativo}.SAO")
+            prices = alpha_vantage_service.get_price_by_month(ticker=f"{ativo}.SAO")
             if 'Information' in prices:
                 raise ApiRateLimit(prices["Information"])
 
