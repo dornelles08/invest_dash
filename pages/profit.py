@@ -19,8 +19,9 @@ def find_price_month(row, prices_months_, mes_ano):
         filter(lambda x: x["ativo"] == ativo_name, prices_months_))[0]["price_month"]
 
     price_month = list(filter(lambda x: int(x["ano"]) ==
-                              ano and int(x["mes"]) == mes, price_month_ativo))[0]
+                              ano and int(x["mes"]) == mes, price_month_ativo))
 
+    price_month = price_month[0]
     cotacao = float(price_month["close"])
 
     unfolding_ativo = unfoldin_service.get_by_ativo(ativo_name)
@@ -148,8 +149,6 @@ group_transactions_mes_ano["Saldo"] = group_transactions_mes_ano["Patrimônio"] 
     group_transactions_mes_ano["Rentabilidade"]
 group_transactions_mes_ano["% Rentabilidade"] = ((group_transactions_mes_ano["Saldo"] /
                                                   group_transactions_mes_ano["Patrimônio"])-1)*100
-
-print(50*group_transactions_mes_ano.shape[0])
 
 st.dataframe(
     data=group_transactions_mes_ano,
