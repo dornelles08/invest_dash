@@ -31,6 +31,8 @@ test_page = st.Page("pages/test.py",
                     icon=":material/bug_report:")
 
 login_page = st.Page("pages/login.py", title="Log in", icon=":material/login:")
+singup_page = st.Page("pages/cadastrar.py",
+                      title="Sing up", icon=":material/login:")
 logout_page = st.Page("pages/logout.py", title="Log out",
                       icon=":material/logout:")
 
@@ -52,8 +54,8 @@ if "token" in st.session_state and "user" in st.session_state:
     if TOKEN_IS_VALID:
         pg = st.navigation(page_stack)
     else:
-        pg = st.navigation([login_page])
+        pg = st.navigation([login_page, singup_page])
 else:
-    pg = st.navigation([login_page])
+    pg = st.navigation([login_page, singup_page])
 
 pg.run()
