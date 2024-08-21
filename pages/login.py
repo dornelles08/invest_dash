@@ -11,9 +11,7 @@ with st.form("my_form"):
     password = st.text_input("Senha", type="password", value=None)
 
     submitted = st.form_submit_button("Entrar")
-    subscribe = st.form_submit_button("Cadastrar")
-    if subscribe:
-        st.switch_page("pages/4_cadastrar.py")
+
     if submitted:
         if username is not None and password is not None:
             is_authenticated, user, token = login(username, password)

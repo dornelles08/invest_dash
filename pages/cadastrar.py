@@ -10,7 +10,7 @@ if "token" in st.session_state and "user" in st.session_state:
     token = st.session_state["token"]
     token_is_valid = valid_token(token)
     if token_is_valid:
-        st.switch_page("pages/2_dashboard.py")
+        st.switch_page("pages/dashboard.py")
 
 _, col, _ = st.columns([1, 1, 1])
 col.title("Invest Dash")
@@ -31,6 +31,6 @@ with st.form("my_form"):
             else:                
                 st.session_state["user"] = user
                 st.session_state["token"] = token
-                st.switch_page("pages/2_dashboard.py")
+                st.switch_page("pages/dashboard.py")
         else:
             st.warning("Há Informações Faltando")
