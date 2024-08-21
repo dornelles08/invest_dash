@@ -14,6 +14,8 @@ def job():
     for user in users:
         update_prices_month(user["_id"])
 
+    print("Fim")
+
 
 print("Inicio")
 

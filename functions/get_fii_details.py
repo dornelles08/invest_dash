@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from errors.api_rate_limit import ApiRateLimit
+from errors.unauthorized import Unauthorized
 from services.alpha_vantage import AlphaVantageService
 from services.price_mouth import PriceMonthService
 from services.transaction import TransactionsService
@@ -152,9 +153,12 @@ def update_prices_month(user_id):
 
     try:
         for ativo in ativos:
-            prices = alpha_vantage_service.get_price_by_month(ticker=f"{ativo}.SAO")
+            prices = alpha_vantage_service.get_price_by_month(ticker=f"{
+                                                              ativo}.SAO")
             if 'Information' in prices:
                 raise ApiRateLimit(prices["Information"])
+            if 'Error Message' in prices:
+                raise Unauthorized(prices["Error Message"])
 
             prices = prices['Monthly Time Series']
 
