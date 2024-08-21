@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import streamlit as st
 
 from functions.configs import valid_user_logged
@@ -35,7 +37,7 @@ def edit_transaction(transaction):
             "ativo": ativo,
             "qtd": qtd,
             "price": price,
-            "date": date.strftime("%d/%m/%y"),
+            "date": datetime.combine(date, datetime.min.time()),
             "total": round(qtd*price, 2),
             "user_id": st.session_state["user"]["_id"]
         }

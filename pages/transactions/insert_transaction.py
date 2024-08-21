@@ -27,7 +27,7 @@ def insert_transaction():
             "ativo": ativo,
             "qtd": qtd,
             "price": price,
-            "date": datetime.combine(date.today(), datetime.min.time()),
+            "date": datetime.combine(date, datetime.min.time()),
             "total": qtd*price,
             "user_id": st.session_state["user"]["_id"]
         }
